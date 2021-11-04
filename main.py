@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import math
 
-
+# create application screen with lavender background
 StegGB = Tk()
 StegGB.configure(background='lavender')
 StegGB.title("StegGB")
@@ -13,6 +13,7 @@ StegGB.geometry('600x600')
 
 global path_image
 
+# image size for display on application window
 image_display_size = 400, 400
 
 
@@ -22,7 +23,6 @@ def errorMsg():
 
 
 def encodeimage():
-    
     global path_image, img_base
     data = txt.get(1.0, "end-1c")
     # load the image
@@ -39,46 +39,44 @@ def encodeimage():
 
     count = 0
     charCount = 0
-    
+
     for i in range(RowReq + 1):
-       
-        while (count < width and charCount < len(data)):
+
+        while count < width and charCount < len(data):
             char = data[charCount]
             charCount += 1
-            
+
             for index_k, k in enumerate(char):
                 if ((k == '1' and img[i][count][index_k % 3] % 2 == 0) or (
                         k == '0' and img[i][count][index_k % 3] % 2 == 1)):
                     img[i][count][index_k % 3] -= 1
-                if (index_k % 3 == 2):
+                if index_k % 3 == 2:
                     count += 1
-                if (index_k == 7):
-                    if (charCount * 3 < PixReq and img[i][count][2] % 2 == 1):
+                if index_k == 7:
+                    if charCount * 3 < PixReq and img[i][count][2] % 2 == 1:
                         img[i][count][2] -= 1
-                    if (charCount * 3 >= PixReq and img[i][count][2] % 2 == 0):
+                    if charCount * 3 >= PixReq and img[i][count][2] % 2 == 0:
                         img[i][count][2] -= 1
                     count += 1
         count = 0
 
-    
     # Write the encrypted image into a new file
     cv2.imwrite(enterFilename.get(), img)
 
-
+# function to save the file.
 def saveFilename():
     global enterFilename, txt, popUp
 
     try:
-       loadImg()
+        loadImg()
 
-    except(NameError):
+    except NameError:
         errorMsg()
 
     else:
         # create a popup window
         popUp = Toplevel(StegGB)
         popUp.geometry("400x400")
-
 
         labelEncode = Label(popUp, text="Enter message to encode:")
         labelEncode.place(x=75, y=30)
@@ -103,7 +101,7 @@ def saveFilename():
 #         error = messagebox.showerror("No input", "Please input your message before saving the file!")
 #         txt.focus_set()
 def confirmMsg():
-    #validate inputs
+    # validate inputs
     if not txt.get(1.0, "end-1c"):
         error = messagebox.showerror("No input", "Please input your message before saving the file!")
     elif not enterFilename.get():
@@ -123,12 +121,11 @@ def confirmMsg():
 
 
 def decodeimage():
-
     global img_base
     try:
         loadImg()
 
-    except(NameError):
+    except NameError:
         errorMsg()
 
     else:
@@ -140,7 +137,7 @@ def decodeimage():
         for index_i, i in enumerate(img):
             i.tolist()
             for index_j, j in enumerate(i):
-                if (index_j) % 3 == 2:
+                if index_j % 3 == 2:
                     # r
                     data.append(bin(j[0])[-1])
                     # g
@@ -178,6 +175,7 @@ def decodeimage():
 
         img_base.config(image='')  # clear image
 
+
 def loadImg():
     global img_base
     # load the image using the path
@@ -192,6 +190,7 @@ def loadImg():
     img_base.image = render
     img_base.place(x=90, y=90)
 
+
 def chooseFile():
     global path_image
     # use the tkinter filedialog library to open the file using a dialog box.
@@ -199,8 +198,9 @@ def chooseFile():
     path_image = filedialog.askopenfilename(title='Choose a file',
                                             filetypes=[('PNG files', '.png'), ('JPG files', '.jpg'),
                                                        ('BMP files', '*.bmp')])  # filter types of files
-    #load image
+    # load image
     loadImg()
+
 
 # create a button for calling the function on_click
 on_click_button = Button(StegGB, text="Choose Image", bg='white', fg='black', command=chooseFile)
