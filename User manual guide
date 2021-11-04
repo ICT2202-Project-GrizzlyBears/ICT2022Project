@@ -20,6 +20,7 @@ Select the modules --> install (to install the supporting modules) --> repeat th
 After ensuring all the modules are installed, run the python file.
 
 Users should be able to view a window screen with the following buttons; "Encode", "Decode" and "Choose Image".
+*Users should take note that only jpg,png and bmp* format are supported*
 
 Encode:
 1.) To start encoding, select an image via the "Choose image" button. 
