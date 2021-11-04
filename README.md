@@ -1,4 +1,4 @@
-# ICT2022Project
+# ICT2202Project
 
 Steganography
 
