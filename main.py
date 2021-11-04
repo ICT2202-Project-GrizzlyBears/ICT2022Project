@@ -11,28 +11,29 @@ StegGB.configure(background='lavender')
 StegGB.title("StegGB")
 StegGB.geometry('600x600')
 
-global path_image
+global path_image, img_base, enterFilename, encodeTxt, popUp
 
 # image size for display on application window
 image_display_size = 400, 400
 
-
+# error msg for no image selected
 def errorMsg():
     # display error message
     error = messagebox.showerror("No image selected", "Please choose an image before encoding/decoding!")
 
-
+# function to encode image
 def encodeimage():
     global path_image, img_base
-    data = txt.get(1.0, "end-1c")
+    # store the secret message into 'secretMsg'
+    secretMsg = encodeTxt.get(1.0, "end-1c")
     # load the image
     img = cv2.imread(path_image)
 
     # break the image into its character level. Represent the characters in ASCII.
-    data = [format(ord(i), '08b') for i in data]
+    secretMsg = [format(ord(i), '08b') for i in secretMsg]
     _, width, _ = img.shape
     # encode the image
-    PixReq = len(data) * 3
+    PixReq = len(secretMsg) * 3
 
     RowReq = PixReq / width
     RowReq = math.ceil(RowReq)
@@ -42,8 +43,8 @@ def encodeimage():
 
     for i in range(RowReq + 1):
 
-        while count < width and charCount < len(data):
-            char = data[charCount]
+        while count < width and charCount < len(secretMsg):
+            char = secretMsg[charCount]
             charCount += 1
 
             for index_k, k in enumerate(char):
@@ -60,13 +61,14 @@ def encodeimage():
                     count += 1
         count = 0
 
-    # Write the encrypted image into a new file
+    # Write the encoded image into a new file - get filename input from users
     cv2.imwrite(enterFilename.get(), img)
 
 # function to save the file.
 def saveFilename():
-    global enterFilename, txt, popUp
+    global enterFilename, encodeTxt, popUp
 
+    # If user click encode button before uploading image, show error messsage
     try:
         loadImg()
 
@@ -77,36 +79,35 @@ def saveFilename():
         # create a popup window
         popUp = Toplevel(StegGB)
         popUp.geometry("400x400")
+        popUp.title("Encode")
 
         labelEncode = Label(popUp, text="Enter message to encode:")
         labelEncode.place(x=75, y=30)
-        # add a text box using tkinter's Text function and place it at (340,55). The text box is of height 165pixels.
-        txt = Text(popUp, wrap=WORD, width=30)
-        txt.place(x=75, y=55, height=165)
+        # create a text box for users to input message to encode
+        encodeTxt = Text(popUp, wrap=WORD, width=30)
+        encodeTxt.place(x=75, y=55, height=165)
 
         labelFilename = Label(popUp, text="Enter filename with extension(e.g .jpg/.png/.bmp):")
         labelFilename.place(x=60, y=250)
+        # create entry for users to enter filename
         enterFilename = Entry(popUp, width=25)
         enterFilename.pack()
         enterFilename.place(x=115, y=275)
 
+        # save file button will go to confirmMsg function
         saveFile_button = Button(popUp, text="Save File", bg='white', fg='black', command=confirmMsg)
         saveFile_button.place(x=140, y=320, width=110, height=40)
 
 
-# def check_empty():
-#     if txt.get(1.0, "end-1c"):
-#         pass  # your function where you want to jump
-#     else:
-#         error = messagebox.showerror("No input", "Please input your message before saving the file!")
-#         txt.focus_set()
+
 def confirmMsg():
+
     # validate inputs
-    if not txt.get(1.0, "end-1c"):
+    if not encodeTxt.get(1.0, "end-1c"):
         error = messagebox.showerror("No input", "Please input your message before saving the file!")
     elif not enterFilename.get():
         error = messagebox.showerror("No input", "Please input your file name before saving the file!")
-        txt.focus_set()
+        encodeTxt.focus_set()
     else:
         Confirm = messagebox.askyesno("Confirmation", "Confirm encode text?")
         if Confirm == 1:
@@ -122,6 +123,7 @@ def confirmMsg():
 
 def decodeimage():
     global img_base
+    # If user click decode button before uploading image, show error messsage
     try:
         loadImg()
 
@@ -130,58 +132,64 @@ def decodeimage():
 
     else:
 
-        # decrypt the data from the image
+        # decrypt the secretMsg from the image
         img = cv2.imread(path_image)
-        data = []
+        secretMsg = []
         stop = False
         for index_i, i in enumerate(img):
             i.tolist()
             for index_j, j in enumerate(i):
                 if index_j % 3 == 2:
                     # r
-                    data.append(bin(j[0])[-1])
+                    secretMsg.append(bin(j[0])[-1])
                     # g
-                    data.append(bin(j[1])[-1])
+                    secretMsg.append(bin(j[1])[-1])
                     # b
                     if bin(j[2])[-1] == '1':
                         stop = True
                         break
                 else:
                     # r
-                    data.append(bin(j[0])[-1])
+                    secretMsg.append(bin(j[0])[-1])
                     # g
-                    data.append(bin(j[1])[-1])
+                    secretMsg.append(bin(j[1])[-1])
                     # b
-                    data.append(bin(j[2])[-1])
+                    secretMsg.append(bin(j[2])[-1])
             if stop:
                 break
-        msg = []
+        decodedMsg = []
         # join all the bits to form letters (ASCII Representation)
-        for i in range(int((len(data) + 1) / 8)):
-            msg.append(data[i * 8:(i * 8 + 8)])
+        for i in range(int((len(secretMsg) + 1) / 8)):
+            decodedMsg.append(secretMsg[i * 8:(i * 8 + 8)])
         # join all the letters to form the message.
-        msg = [chr(int(''.join(i), 2)) for i in msg]
-        msg = ''.join(msg)
+        decodedMsg = [chr(int(''.join(i), 2)) for i in decodedMsg]
+        decodedMsg = ''.join(decodedMsg)
 
+        # create a pop up window to show decoded message
         popUp = Toplevel(StegGB)
         popUp.geometry("300x300")
+        popUp.title("Decode")
+
+        # a textbox to display decoded message - disabled textbox
         labelDecode = Label(popUp, text="The decoded message is:")
         labelDecode.place(x=30, y=30)
         decodedtext = Text(popUp, state='disabled', width=30, height=10)
         decodedtext.place(x=30, y=60)
         decodedtext.configure(state='normal')
-        decodedtext.insert('end', msg)
+        decodedtext.insert('end', decodedMsg)
         decodedtext.configure(state='disabled')
 
-        img_base.config(image='')  # clear image
 
 
 def loadImg():
     global img_base
+
     # load the image using the path
     load_image = Image.open(path_image)
+
     # set the image into the GUI using the thumbnail function from tkinter
     load_image.thumbnail(image_display_size, Image.ANTIALIAS)
+
     # load the image as a numpy array for efficient computation and change the type to unsigned integer
     np_load_image = np.asarray(load_image)
     np_load_image = Image.fromarray(np.uint8(np_load_image))
@@ -202,12 +210,15 @@ def chooseFile():
     loadImg()
 
 
-# create a button for calling the function on_click
+# button to choose file
 on_click_button = Button(StegGB, text="Choose Image", bg='white', fg='black', command=chooseFile)
 on_click_button.place(x=250, y=20, width=110, height=40)
 
+# button to encode message and savw file name
 encode_button = Button(StegGB, text="Encode", bg='white', fg='black', command=saveFilename)
 encode_button.place(x=160, y=530, width=110, height=40)
+
+# button to decode image
 decode_button = Button(StegGB, text="Decode", bg='white', fg='black', command=decodeimage)
 decode_button.place(x=340, y=530, width=110, height=40)
 
