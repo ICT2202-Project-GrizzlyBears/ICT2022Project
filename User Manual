@@ -43,7 +43,7 @@ Steps to encode image:
 4) Another window will appear for you to enter the message to encode
 5) Enter the message to encode
 6) Enter filename with extension (.jpg/.png/.bmp)
-7) Click 'Save File' button to complete the encoding. 
+7) Click 'Save File' button to complete the encoding
 	>> If user clicked 'Save File' button before entering the message or filename, a popup messagebox will be displayed to remind user to fill up the required fields.
 8) The file saved will goes to C drive > Users > [user] > PycharmProjects > [project_file]
 
