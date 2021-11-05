@@ -13,8 +13,15 @@ StegGB.configure(background='#ADD8E6')
 StegGB.title("StegGB")
 # GUI size
 StegGB.geometry('600x600')
+# GUI cannot resize
+StegGB.resizable(width=False, height=False)
 
-global path_image, img_base, enterFilename, encodeTxt, popUp
+# disable the cross button
+def disable_xbtn():
+   pass
+
+
+StegGB.protocol("WM_DELETE_WINDOW", disable_xbtn)
 
 # display image size on GUI
 image_size = 400, 400
@@ -28,14 +35,14 @@ def loadImg():
 
     # set the image into the GUI using the thumbnail function from tkinter
     load_image.thumbnail(image_size, Image.ANTIALIAS)
-
     # load the image as a numpy array for efficient computation and change the type to unsigned integer
     np_load_image = np.asarray(load_image)
     np_load_image = Image.fromarray(np.uint8(np_load_image))
     render = ImageTk.PhotoImage(np_load_image)
-    img_base = Label(StegGB, image=render)
+    img_base = Label(StegGB, image=render, anchor=CENTER)
     img_base.image = render
     img_base.place(x=90, y=90)
+
 
 def chooseFile():
 
@@ -53,8 +60,42 @@ def errorMsg():
     # display error message when no image is selected
     error = messagebox.showerror("No image selected", "Please choose an image before encoding/decoding!")
 
+# function to encode message in popup
+def encodeImg():
+    global enterFilename, encodeTxt, popUp
+
+    try:
+        # If user click encode button before uploading image, show error message
+       loadImg()
+
+    except NameError:
+        errorMsg()
+
+    else:
+        # c# create a pop up window to show encode message
+        popUp = Toplevel(StegGB)
+        popUp.geometry("400x400")
+        popUp.title("Encode")
+        popUp.resizable(width=False, height=False)
+
+        labelEncode = Label(popUp, text="Enter message to encode:")
+        labelEncode.place(x=75, y=30)
+        # create a text box for users to input message to encode
+        encodeTxt = Text(popUp, wrap=WORD, width=25, font=("Helvetica", 15))
+        encodeTxt.place(x=75, y=55, height=165)
+
+        labelFilename = Label(popUp, text="Enter filename with extension(e.g .jpg/.png/.bmp):")
+        labelFilename.place(x=60, y=250)
+        enterFilename = Entry(popUp, width=25, font=("Helvetica", 15))
+        enterFilename.pack()
+        enterFilename.place(x=60, y=275)
+
+        # save file button will go to confirmMsg function
+        saveFile_button = Button(popUp, text="Save File", bg='white', fg='black', command=confirmMsg)
+        saveFile_button.place(x=140, y=320, width=110, height=40)
+
 # function to encode image
-def encodeImage():
+def encodeAlg():
 
     global path_image, img_base
 
@@ -105,37 +146,7 @@ def encodeImage():
         cv2.imwrite(enterFilename.get(), img)
 
 
-def saveFilename():
-    global enterFilename, encodeTxt, popUp
 
-    try:
-        # If user click encode button before uploading image, show error message
-       loadImg()
-
-    except NameError:
-        errorMsg()
-
-    else:
-        # c# create a pop up window to show encode message
-        popUp = Toplevel(StegGB)
-        popUp.geometry("400x400")
-        popUp.title("Encode")
-
-        labelEncode = Label(popUp, text="Enter message to encode:")
-        labelEncode.place(x=75, y=30)
-        # create a text box for users to input message to encode
-        encodeTxt = Text(popUp, wrap=WORD, width=30)
-        encodeTxt.place(x=75, y=55, height=165)
-
-        labelFilename = Label(popUp, text="Enter filename with extension(e.g .jpg/.png/.bmp):")
-        labelFilename.place(x=60, y=250)
-        enterFilename = Entry(popUp, width=25)
-        enterFilename.pack()
-        enterFilename.place(x=115, y=275)
-
-        # save file button will go to confirmMsg function
-        saveFile_button = Button(popUp, text="Save File", bg='white', fg='black', command=confirmMsg)
-        saveFile_button.place(x=140, y=320, width=110, height=40)
 
 def confirmMsg():
     # validate message and filename inputs
@@ -149,7 +160,7 @@ def confirmMsg():
         Confirm = messagebox.askyesno("Confirmation", "Confirm encode text and save file name?")
         if Confirm == 1:
             # call the encodeImage() function
-            encodeImage()
+            encodeAlg()
             messagebox.showinfo("Successful", "Encoded Successfully")
             # to close the 2nd window
             popUp.destroy()
@@ -207,12 +218,13 @@ def decodeImage():
         # join all the letters to form the message
         decodeMsg = [chr(int(''.join(i), 2)) for i in decodeMsg]
         decodeMsg = ''.join(decodeMsg)
-
+        # message_label = Label(StegGB, text=decodeMsg, bg='lavender', font=("Times New Roman", 10))
+        # message_label.place(x=30, y=400)
         # create a pop up window to show decoded message
         popUp = Toplevel(StegGB)
         popUp.geometry("300x300")
         popUp.title("Decode")
-
+        popUp.resizable(width=False, height=False)
         # a textbox to display decoded message - disabled textbox
         labelDecode = Label(popUp, text="The decoded message is:")
         labelDecode.place(x=30, y=30)
@@ -225,12 +237,23 @@ def decodeImage():
         img_base.config(image='')  # clear image
 
 
+def ExitApp():
+    ExitBox = messagebox.askquestion('Exit Application', 'Are you sure you want to exit the application', icon='warning')
+    if ExitBox == 'yes':
+        StegGB.destroy()
+    else:
+        messagebox.showinfo('Return', 'You will now return to the application screen')
+
+
+exitbutton = Button(StegGB, text='Exit', command=ExitApp, bg='red', fg = 'black')
+exitbutton.place(x=500, y=20, width=60, height=40)
+
 # button to choose image file
 chooseImage = Button(StegGB, text="Choose Image", bg='white', fg='black', command=chooseFile)
 chooseImage.place(x=250, y=20, width=110, height=40)
 
 # button to encode message and save file name
-encode_button = Button(StegGB, text="Encode", bg='white', fg='black', command=saveFilename)
+encode_button = Button(StegGB, text="Encode", bg='white', fg='black', command=encodeImg)
 encode_button.place(x=160, y=530, width=110, height=40)
 
 # button to decode image
