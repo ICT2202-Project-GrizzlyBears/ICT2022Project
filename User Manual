@@ -21,16 +21,16 @@ If encounter issue importing modules, user can do so by entering the following c
 >> 
 
 Brief descriptions on how the codes/functions work:
-#Main screen basic configurations
+# Main screen basic configurations
 Tk(): Main window created
 title(): Name of the main window displayed, in this case will be our application name 'StegGB'
 geometry(): Size of the main window
 configure(background='lavender'): Sets background color of the main window
 Button(): Creates a button
 place(): Sets the position of the widget on the window
-resizable(): Allows main window to change the size according to the code
+resizable(): Allows the application to have a fixed size window
 
-#Main functions
+# Main functions
 disable_xbtn(): Disable the 'Close Window' button
 errorMsg(): Error messagebox displayed after no image is selected
 encodeImg(): Encode the message in a popup window
