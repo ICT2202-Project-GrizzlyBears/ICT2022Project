@@ -3,6 +3,9 @@
 Programming language used: 
 Python 3.0 and above
 
+IDE used:
+PyCharm
+
 Required Python's inbuilt modules:
 1) Tkinter (Graphical user interface package)
 >> make sure to include filedialog which is a set of functions that can be used to work with files
@@ -11,10 +14,13 @@ Required Python's inbuilt modules:
 4) Pillow Library (PIL) (Save many different formats of images)
 5) math (Access to mathematical functions)
 
-If encounter issue importing module cv2, user can do so by entering the following commands in the terminaal:
+If encounter issue importing modules, user can do so by entering the following commands in the terminal:
+# cv2
 >> pip3 install opencv-python
+# PIL
+>> 
 
-Brief description on how the codes/functions work:
+Brief descriptions on how the codes/functions work:
 #Main screen basic configurations
 Tk(): Main window created
 title(): Name of the main window displayed, in this case will be our application name 'StegGB'
