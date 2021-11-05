@@ -11,7 +11,7 @@ Required Python's inbuilt modules:
 4) Pillow Library (PIL) (Save many different formats of images)
 5) math (Access to mathematical functions)
 
-If encounter issue importing module cv2, you can do so by entering the following commands in the terminaal:
+If encounter issue importing module cv2, user can do so by entering the following commands in the terminaal:
 >> conda update anaconda-navigator  
 >> conda update navigator-updater
 
