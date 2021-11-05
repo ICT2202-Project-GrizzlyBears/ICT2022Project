@@ -37,7 +37,7 @@ encodeImg(): Encode the message in a popup window
 encodeAlg(): Encode secret message in the image selected
 saveFilename(): Save file after entering the secret message and new file name
 confirmMsg(): Validates empty inputs, display messagebox whether it is successful or not
-decodeimage(): Decodes the secret message in the image
+decodeImage(): Decodes the secret message in the image
 loadImg(): Displays the image selected from file explorer on GUI
 chooseFile(): Select images from file explorer (filtered with only .jpg, .png and .bmp extensions)
 ExitApp(): Exits the application, a popup messagebox will be displayed to confirm the exit
