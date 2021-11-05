@@ -28,15 +28,19 @@ geometry(): Size of the main window
 configure(background='lavender'): Sets background color of the main window
 Button(): Creates a button
 place(): Sets the position of the widget on the window
+resizable(): Allows main window to change the size according to the code
 
 #Main functions
+disable_xbtn(): Disable the 'Close Window' button
 errorMsg(): Error messagebox displayed after no image is selected
-encodeimage(): Encode secret message in the image selected
+encodeImg(): Encode the message in a popup window
+encodeAlg(): Encode secret message in the image selected
 saveFilename(): Save file after entering the secret message and new file name
 confirmMsg(): Validates empty inputs, display messagebox whether it is successful or not
 decodeimage(): Decodes the secret message in the image
 loadImg(): Displays the image selected from file explorer on GUI
 chooseFile(): Select images from file explorer (filtered with only .jpg, .png and .bmp extensions)
+ExitApp(): Exits the application, a popup messagebox will be displayed to confirm the exit
 
 After ensuring the above functions have no issues, proceed to run the program.
 
@@ -44,17 +48,17 @@ Steps to encode image:
 1) Click on the button 'Choose Image' to select the image from the file explorer
 2) The image selected will be displayed below
 3) Next, click 'Encode' button to encode message into the image selected
-	>> If user clicked 'Encode' or 'Decode' button before selecting the image, a popup messagebox will be displayed to remind user to select image.
+	>> If user clicked 'Encode' or 'Decode' button before selecting the image, a popup messagebox will be displayed to remind user to select image
 4) Another window will appear for you to enter the message to encode
 5) Enter the message to encode
 6) Enter filename with extension (.jpg/.png/.bmp)
 7) Click 'Save File' button to complete the encoding
-	>> If user clicked 'Save File' button before entering the message or filename, a popup messagebox will be displayed to remind user to fill up the required fields.
-8) The file saved will goes to C drive > Users > [user] > PycharmProjects > [project_file]
+	>> If user clicked 'Save File' button before entering the message or filename, a popup messagebox will be displayed to remind user to fill up the required fields
+8) The file saved will go to C drive > Users > [user] > PycharmProjects > [project_file]
 
 Steps to decode image:
-1) Click on the button 'Choose Image' to select the image from the file path in which the encoded image is saved.
+1) Click on the button 'Choose Image' to select the image from the file path in which the encoded image is saved
 2) The image selected will be displayed below
 3) Next, click 'Decode' button to encode message into the image selected
-	>> If user clicked 'Encode' or 'Decode' button before selecting the image, a popup messagebox will be displayed to remind user to select image.
-4) Another window will appear with the decoded message.
+	>> If user clicked 'Encode' or 'Decode' button before selecting the image, a popup messagebox will be displayed to remind user to select image
+4) Another window will appear with the decoded message
