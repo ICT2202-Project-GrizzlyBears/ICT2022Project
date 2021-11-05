@@ -12,8 +12,7 @@ Required Python's inbuilt modules:
 5) math (Access to mathematical functions)
 
 If encounter issue importing module cv2, user can do so by entering the following commands in the terminaal:
->> conda update anaconda-navigator  
->> conda update navigator-updater
+>> pip3 install opencv-python
 
 Brief description on how the codes/functions work:
 #Main screen basic configurations
