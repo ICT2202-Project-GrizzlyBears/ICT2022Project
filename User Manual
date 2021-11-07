@@ -6,9 +6,15 @@ Python 3.0 and above
 IDE used:
 PyCharm
 
-Required Python's inbuilt modules:
+Image File Formats supported:
+1) JPG
+2) PNG
+3) BMP
+4) JFIF
+
+Python's inbuilt modules required:
 1) Tkinter (Graphical user interface package)
->> make sure to include filedialog which is a set of functions that can be used to work with files
+>> Make sure to include filedialog which is a set of functions that can be used to work with files
 2) cv2 (Image processing)
 3) numpy (Performs wide variety of mathematical operations on arrays)
 4) Pillow Library (PIL) (Save many different formats of images)
@@ -62,3 +68,5 @@ Steps to decode image:
 3) Next, click 'Decode' button to encode message into the image selected
 	>> If user clicked 'Encode' or 'Decode' button before selecting the image, a popup messagebox will be displayed to remind user to select image
 4) Another window will appear with the decoded message
+
+
