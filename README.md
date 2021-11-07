@@ -2,7 +2,7 @@
 
 Steganography
 
-We use python to decode messages in Images and Text Files
+We use python to encode and decode messages in Images Files
 
 The Images files supported are .png, .bmp, .jpg and .jfif
 
