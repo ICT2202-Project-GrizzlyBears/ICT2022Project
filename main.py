@@ -51,7 +51,7 @@ def chooseFile():
     # use the tkinter filedialog library to obtain the image of the path
     path_image = filedialog.askopenfilename(title='Choose a file',
                                             filetypes=[('PNG files', '.png'), ('JPG files', '.jpg'),
-                                                       ('BMP files', '*.bmp')])  # filter types of files
+                                                       ('BMP files', '*.bmp'),('JFIF files', '*.jfif')])  # filter types of files
     # load image
     loadImg()
 
