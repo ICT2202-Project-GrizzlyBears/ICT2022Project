@@ -18,7 +18,7 @@ If encounter issue importing modules, user can do so by entering the following c
 # cv2
 >> pip3 install opencv-python
 # PIL
->> 
+>> pip3 install Pillow
 
 Brief descriptions on how the codes/functions work:
 # Main screen basic configurations
@@ -39,7 +39,7 @@ saveFilename(): Save file after entering the secret message and new file name
 confirmMsg(): Validates empty inputs, display messagebox whether it is successful or not
 decodeImage(): Decodes the secret message in the image
 loadImg(): Displays the image selected from file explorer on GUI
-chooseFile(): Select images from file explorer (filtered with only .jpg, .png and .bmp extensions)
+chooseFile(): Select images from file explorer (filtered with only .jpg, .png, .bmp and .jfif extensions)
 ExitApp(): Exits the application, a popup messagebox will be displayed to confirm the exit
 
 After ensuring the above functions have no issues, proceed to run the program.
